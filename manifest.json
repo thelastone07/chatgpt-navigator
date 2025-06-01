@@ -5,13 +5,18 @@
     "description": "A Chrome extension to enhance navigation in ChatGPT and other AI chat tools",
     "permissions" : [
         "scripting",
-        "activeTab"
+        "activeTab",
+        "tabs",
+        "webNavigation"
     ],
-    "content_scripts" : [
+    "host_permissions": [
+        "https://chatgpt.com/*"   
+    ],
+    "content_scripts": [
         {
             "matches": ["https://chatgpt.com/c/*"],
             "js": ["chatgpt.js"],
-            "run_at" : "document_idle"
+            "run_at": "document_idle"
         }
     ]
 }

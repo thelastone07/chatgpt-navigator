@@ -1,5 +1,29 @@
 (function () {
 
+if (!window.__myHistoryPatched) {
+    window.__myHistoryPatched = true;
+    const pushState = history.pushState;
+    const replaceState = history.replaceState;
+
+    function triggerUrlChange() {
+      console.log('URL changed');
+    }
+
+    history.pushState = function() {
+      const result = pushState.apply(this, arguments);
+      triggerUrlChange();
+      return result;
+    };
+
+    history.replaceState = function() {
+      const result = replaceState.apply(this, arguments);
+      triggerUrlChange();
+      return result;
+    };
+
+    window.addEventListener('popstate', triggerUrlChange);
+  }
+
 let currentIdx = 0;
 let scrollTimeout = null;
 let scrollContainer = null;

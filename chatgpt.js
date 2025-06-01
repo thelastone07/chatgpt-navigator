@@ -7,6 +7,7 @@ if (!window.__myHistoryPatched) {
 
     function triggerUrlChange() {
       console.log('URL changed');
+      initializeNavigator();
     }
 
     history.pushState = function() {
@@ -23,6 +24,25 @@ if (!window.__myHistoryPatched) {
 
     window.addEventListener('popstate', triggerUrlChange);
   }
+
+function trackSidebar() {
+  const historyDiv = document.getElementById('history');
+  if (!historyDiv) {
+      setTimeout(trackSidebar, 1000);
+      return;
+  }
+  console.log('Sidebar found',historyDiv);
+  historyDiv.addEventListener('click', function(e) {
+  // Check if the click was on an <a> tag or its descendant
+  const aTag = e.target.closest('a');
+  if (aTag && historyDiv.contains(aTag)) {
+    console.log('changed url through a ');
+    initializeNavigator();
+  }
+});
+}
+
+trackSidebar();       
 
 let currentIdx = 0;
 let scrollTimeout = null;
@@ -226,18 +246,19 @@ function connectButtons() {
 
 function initializeNavigator() {
   cleanup();
-  injectNavigator();
-  connectButtons();
-  setupScrollTracking();
-
   
   if (observer) observer.disconnect();
   function tryToObserve() {
     const ele = document.querySelector('[data-testid^="conversation-turn-"]');
+    console.log('Trying to observe conversation turns', ele);
     if (!ele) {
       setTimeout(tryToObserve, 100);
       return;
     }
+    injectNavigator();
+    connectButtons();
+    setupScrollTracking();
+
     const observerElement = ele.parentElement;
     observer = new MutationObserver(() => {
       if (isPaused) return;
@@ -259,7 +280,7 @@ function initializeNavigator() {
   });
   }
 
-  tryToObserve();
+  setTimeout(tryToObserve,5000);
 }
 
 initializeNavigator();

@@ -6,7 +6,7 @@ if (!window.__myHistoryPatched) {
     const replaceState = history.replaceState;
 
     function triggerUrlChange() {
-      console.log('URL changed');
+      // console.log('URL changed');
       initializeNavigator();
     }
 
@@ -31,16 +31,36 @@ function trackSidebar() {
       setTimeout(trackSidebar, 1000);
       return;
   }
-  console.log('Sidebar found',historyDiv);
+  // console.log('Sidebar found',historyDiv);
   historyDiv.addEventListener('click', function(e) {
   // Check if the click was on an <a> tag or its descendant
   const aTag = e.target.closest('a');
   if (aTag && historyDiv.contains(aTag)) {
-    console.log('changed url through a ');
+    // console.log('changed url through a ');
     initializeNavigator();
   }
 });
+  const navBar  = document.querySelector('nav[aria-label="Chat history"]');
+  // console.log('Nav bar found', navBar);
+  if (navBar) {
+    const asides = Array.from(navBar.children).filter(el => el.tagName.toLowerCase()==='aside');
+    asides.forEach(aside =>  {
+      aside.addEventListener('click', (e) => {
+        const aTag = e.target.closest('a');
+        if (aTag && navBar.contains(aTag)) {
+          // console.log('changed url through aside');
+          initializeNavigator();
+        }
+      });
+    })
+  }  
+
 }
+
+function shouldInsert() {
+  return true;
+}
+
 
 trackSidebar();       
 
@@ -65,7 +85,7 @@ function cleanup() {
 
 function injectNavigator() {
   if (document.getElementById('draggable-buttons-container')) return;
-  console.log('Injecting navigator');
+  // console.log('Injecting navigator');
   const container = document.createElement('div');
   container.id = 'draggable-buttons-container';
   Object.assign(container.style, {
@@ -159,7 +179,7 @@ function scrollToConversation(idx) {
   const conversationTurns = getConversationTurns();
   if (conversationTurns.length === 0) return;
   idx = Math.max(0, Math.min(idx, conversationTurns.length - 1));
-  console.log(`Scrolling to conversation turn at index: ${idx}`);
+  // console.log(`Scrolling to conversation turn at index: ${idx}`);
   conversationTurns[idx].scrollIntoView({
     behavior: "smooth",
     block: "start"
@@ -181,13 +201,12 @@ turns.forEach((el, idx) => {
 });
 
 if (visibleEls.length > 0) {
-  // If multiple visible - pick one closest to top
   visibleEls.sort((a, b) => a.top - b.top);
   const newIdx = visibleEls[0].idx;
 
   if (currentIdx !== newIdx) {
     currentIdx = newIdx;
-    console.log(`Current conversation index: ${currentIdx}`);
+    // console.log(`Current conversation index: ${currentIdx}`);
     connectButtons();
   }
 }
@@ -245,12 +264,13 @@ function connectButtons() {
 }
 
 function initializeNavigator() {
+  if (!shouldInsert()) return;
   cleanup();
   
   if (observer) observer.disconnect();
   function tryToObserve() {
     const ele = document.querySelector('[data-testid^="conversation-turn-"]');
-    console.log('Trying to observe conversation turns', ele);
+    // console.log('Trying to observe conversation turns', ele);
     if (!ele) {
       setTimeout(tryToObserve, 100);
       return;
@@ -263,7 +283,7 @@ function initializeNavigator() {
     observer = new MutationObserver(() => {
       if (isPaused) return;
       if (isScrolling) return;
-      console.log('Firing observer');
+      // console.log('Firing observer');
       isPaused = true;
       setTimeout(() => {
         isPaused = false;
@@ -273,7 +293,7 @@ function initializeNavigator() {
       }
       setupScrollTracking();
     });
-    console.log('setting up observer');
+    // console.log('setting up observer');
     observer.observe(observerElement, {
     childList: true,
     subtree: true

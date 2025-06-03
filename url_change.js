@@ -40,6 +40,21 @@
       console.log('changed url through a ');
     }
   });
+
+  const navBar  = document.querySelector('nav[aria-label="Chat history"]');
+  console.log('Nav bar found', navBar);
+  if (navBar) {
+    const asides = Array.from(navBar.children).filter(el => el.tagName.toLowerCase()==='aside');
+    asides.forEach(aside =>  {
+      aside.addEventListener('click', (e) => {
+        const aTag = e.target.closest('a');
+        if (aTag && navBar.contains(aTag)) {
+          console.log('changed url through aside');
+  
+        }
+      });
+    })
+  }
   }
     trackSidebar();         
 

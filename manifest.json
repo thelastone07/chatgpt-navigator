@@ -12,11 +12,7 @@
     "permissions" : [
         "scripting",
         "activeTab",
-        "tabs",
         "webNavigation"
-    ],
-    "host_permissions": [
-        "https://chatgpt.com/*"   
     ],
     "content_scripts": [
         {

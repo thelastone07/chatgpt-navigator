@@ -25,10 +25,17 @@ I am using IIFE to avoid any clash of variables, but the frontend code that you 
 
 ### How to use locally?
 
+1. Download the files.
+2. Go to chrome://extensions.
+3. Switch on developer mode.
+4. Click Load unpacked and upload the folder.
+DONE!!!
 
 
 
 ### Future Plans
 1. Extend to other AI chat tools to have the same purpose.
-2. Add a stop functionality to stop the automatic scroll when followup questions are asked.
+2. Add a stop functionality to stop the automatic scroll when followup questions are asked. 
 3. Zooming in causes the floating UI to enlarge as well. Resolve.
+
+Please feel free to contribute according to Future Plans or otherwise. You can contact me using my socials. Find it on my profile. 😄

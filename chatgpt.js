@@ -179,7 +179,7 @@ function scrollToConversation(idx) {
   const conversationTurns = getConversationTurns();
   if (conversationTurns.length === 0) return;
   idx = Math.max(0, Math.min(idx, conversationTurns.length - 1));
-  // console.log(`Scrolling to conversation turn at index: ${idx}`);
+  if (idx % 2 == 0) idx = idx+1;
   conversationTurns[idx].scrollIntoView({
     behavior: "smooth",
     block: "start"
@@ -205,6 +205,7 @@ if (visibleEls.length > 0) {
   const newIdx = visibleEls[0].idx;
 
   if (currentIdx !== newIdx) {
+    if (currentIdx % 2 == 0) currentIdx += 1;
     currentIdx = newIdx;
     // console.log(`Current conversation index: ${currentIdx}`);
     connectButtons();
@@ -258,8 +259,8 @@ function connectButtons() {
   if (buttons.length < 4) return;
 
   buttons[0].onclick = () => scrollToConversation(0)
-  buttons[1].onclick = () => scrollToConversation(currentIdx - 1)
-  buttons[2].onclick = () => scrollToConversation(currentIdx + 1)
+  buttons[1].onclick = () => scrollToConversation(currentIdx - 2)
+  buttons[2].onclick = () => scrollToConversation(currentIdx + 2)
   buttons[3].onclick = () => scrollToConversation(getConversationTurns().length - 1)
 }
 

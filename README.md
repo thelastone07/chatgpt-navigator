@@ -37,5 +37,6 @@ DONE!!!
 1. Extend to other AI chat tools to have the same purpose.
 2. Add a stop functionality to stop the automatic scroll when followup questions are asked. 
 3. Zooming in causes the floating UI to enlarge as well. Resolve.
+4. Add a history button, to go fro and back conversations
 
 Please feel free to contribute according to Future Plans or otherwise. You can contact me using my socials. Find it on my profile. 😄
